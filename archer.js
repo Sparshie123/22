@@ -1,74 +1,37 @@
-const Engine = Matter.Engine;
-const World = Matter.World;
-const Bodies = Matter.Bodies;
-const Constraint = Matter.Constraint;
+class PlayerArcher {
+  constructor(x, y, width, height) {
 
-var engine, world;
-var canvas;
-var palyer, playerBase, playerArcher,river;
-var baseimage;
+    const options = {
+      isStatic: true
+    };
 
-function preload() {
-  backgroundImg = loadImage("./assets/background.png");
-  baseimage = loadImage("./assets/base.png");
-  playerimage = loadImage("./assets/player.png");
+   //this.body = Matter.Bodies(x, y, width, height, options);
+  // this.body = Matter.Bodies.rect(x, y, width, height);
+   // this.body = Matter.rectangle(x, y, width, height, options);
+   this.body = Matter.Bodies.rectangle(x, y, width, height, options);
+
+    this.width = width;
+    this.height = height;
+    this.collapse = false;
+    this.image = loadImage("./assets/playerArcher.png");
+
+    World.add(world, this.body);
+    Matter.Body.setAngle(this.body, -90);
+  }
+
+  display() {
+    var pos = this.body.position;
+    var angle = this.body.angle;
+
+    push();
+    translate(pos.x, pos.y);
+    rotate(angle);
+    imageMode(CENTER);
+    image(this.image, 0, 0, this.width, this.height);
+    pop();
+  }
 }
 
-function setup() {
-  canvas = createCanvas(windowWidth, windowHeight);
-
-  engine = Engine.create();
-  world = engine.world;
-  angleMode(DEGREES);
-
-  var options = {
-    isStatic: true
-  };
-
-  playerBase = Bodies.rectangle(200, 350, 180, 150, options);
-  World.add(world, playerBase);
-
-  player = Bodies.rectangle(250, playerBase.position.y - 160, 50, 180, options);
-  World.add(world,player)
-
-  
-  river=createSprite(windowWidth-350,windowHeight-200,windowWidth,30)
-  backgroundImg.collide(river) 
-  river.visible=false 
-  river.velocity=-6
-  river.x=width/2
-  
-
- // playerArcher = new ( 340, playerBase.position.y - 112, 120, 120);
-   playerArcher = new PlayerArcher( 340, playerBase.position.y - 112, 120, 120);
- // playerArcher =  PlayerArcher( 340, playerBase.position.y - 112, 120, 120);
- // playerArcher = new PlayerArcher( );
-
-}
-
-function draw() {
-  background(backgroundImg);
-  image(baseimage,playerBase.position.x,playerBase.position.y,180,150)
-  image(playerimage,player.position.x,player.position.y,50,180)
-
-  Engine.update(engine);
-
-  
-  
 
 
-  // playerArcher.display;
-  // playerArcherdisplay();
-   playerArcher.display();
-  // display();
 
-  // Title
- 
-
- 
-  fill("#FFFF");
-  textAlign("center");
-  textSize(40);
-  text("EPIC ARCHERY", width / 2, 100);
- 
-}
